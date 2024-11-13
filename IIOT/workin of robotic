@@ -1,0 +1,62 @@
+Setting Up the Hardware and Pins
+Pin Assignments:
+
+buzzPin = 7: The buzzer is connected to digital pin 7.
+trigPin = 6: The trigger pin of the ultrasonic sensor is connected to digital pin 6. This pin sends out an ultrasonic pulse.
+echoPin = A0: The echo pin of the ultrasonic sensor is connected to analog pin A0. This pin receives the reflected pulse.
+IRPin = A1: The IR sensor is connected to analog pin A1. This sensor detects obstacles based on infrared light.
+Variables:
+
+IRV: Stores the reading from the IR sensor.
+duration: Holds the time taken for the ultrasonic pulse to travel to an object and return.
+distance: Stores the calculated distance between the sensor and an obstacle, in centimeters (cm).
+setup() Function
+The setup() function runs once when the microcontroller starts or is reset.
+
+pinMode(trigPin, OUTPUT): Sets trigPin as an output, allowing it to send signals.
+pinMode(buzzPin, OUTPUT): Sets buzzPin as an output to control the buzzer.
+pinMode(echoPin, INPUT): Sets echoPin as an input, allowing it to read signals from the ultrasonic sensor.
+pinMode(IRPin, INPUT): Sets IRPin as an input to read values from the IR sensor.
+Serial.begin(9600): Initializes serial communication at 9600 baud rate, which allows data to be sent to the Serial Monitor for display.
+loop() Function
+The loop() function repeats continuously, performing the following steps:
+
+1. Measuring Distance with the Ultrasonic Sensor
+The ultrasonic sensor works by sending an ultrasonic pulse and measuring the time it takes to bounce back after hitting an object.
+
+digitalWrite(trigPin, LOW); delayMicroseconds(2);: Ensures the trigger pin is low (no signal) for 2 microseconds to stabilize it.
+
+digitalWrite(trigPin, HIGH); delayMicroseconds(10); digitalWrite(trigPin, LOW);: Sends a 10-microsecond pulse through the trigPin. This starts the distance measurement.
+
+duration = pulseIn(echoPin, HIGH);: Measures how long it takes for the pulse to return after bouncing off an object.
+
+distance = duration * 0.034 / 2;: Converts the time (duration) into a distance (in centimeters). The factor 0.034 is the speed of sound in cm per microsecond, and we divide by 2 because the sound wave travels to the object and back.
+
+Output to Serial Monitor: The calculated distance is printed to the Serial Monitor.
+2. Checking for an Obstacle
+The code then checks if an obstacle is within 20 cm of the sensor.
+
+if (distance < 20): If the distance is less than 20 cm:
+digitalWrite(buzzPin, HIGH);: Turns on the buzzer to signal that an obstacle is close.
+Serial.println("Obstacle detected");: Prints a message to the Serial Monitor indicating an obstacle is detected.
+else: If the distance is 20 cm or more:
+digitalWrite(buzzPin, LOW);: Turns off the buzzer.
+
+Serial.println("Obstacle not detected");: Prints a message to the Serial Monitor indicating no obstacle is detected.
+
+Delay: The code waits 100 milliseconds before taking another distance measurement to avoid overloading the sensor.
+
+3. Reading the IR Sensor
+The IR sensor checks for obstacles in its field.
+
+IRV = digitalRead(IRPin);: Reads the digital value from the IR sensor.
+
+Serial.print("IR Sensor Value: "); Serial.println(IRV);: Prints the IR sensor’s value to the Serial Monitor.
+
+Delay: The code waits 1 second (1000 ms) before repeating the loop.
+Summary
+This code:
+
+Continuously measures distance with the ultrasonic sensor and turns on a buzzer if an obstacle is closer than 20 cm.
+Reads the IR sensor value and prints it to the Serial Monitor.
+Repeats these steps, updating the Serial Monitor with distance and IR sensor information.
