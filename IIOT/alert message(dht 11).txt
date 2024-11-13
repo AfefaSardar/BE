@@ -1,11 +1,9 @@
 #include <DHT.h> // Include the DHT library
 #define dhtpin 2 
-#define dhttype DHT22
+#define dhttype DHT11 // Change to DHT11 for DHT11 sensor
 #define buzzerPin 3 // Define the buzzer pin
 
-
 DHT dht(dhtpin, dhttype);
-
 
 void setup()
 {
@@ -27,6 +25,7 @@ void loop()
   }
   delay(2000);
 }
+
 void sendAlert(String msg)
 {
   Serial.println(msg);
