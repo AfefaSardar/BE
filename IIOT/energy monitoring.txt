@@ -1,0 +1,30 @@
+const int ledPin = 5;       // LED connected to digital pin 5
+const int ldrPin = A0;      // LDR connected to analog pin A0 (assuming A0 as an example)
+
+void setup()
+{
+    Serial.begin(9600);      // Start serial communication at 9600 baud rate
+    pinMode(ledPin, OUTPUT); // Set ledPin as an OUTPUT
+    pinMode(ldrPin, INPUT);  // Set ldrPin as an INPUT
+}
+
+void loop() 
+{
+    int ldrStatus = analogRead(ldrPin); // Read the LDR value
+
+    if (ldrStatus <= 320)    // If it's dark
+    { 
+        digitalWrite(ledPin, HIGH); // Turn on the LED
+        Serial.print("Darkness over here, turn on LED. LDR Value: ");
+        Serial.println(ldrStatus);
+    } 
+
+    else                     // If there's sufficient light
+    { 
+        digitalWrite(ledPin, LOW); // Turn off the LED
+        Serial.print("There is sufficient light, turn off the LED. LDR Value: ");
+        Serial.println(ldrStatus);
+    }
+
+    delay(1000);    // Wait for 1 second before the next loop
+}

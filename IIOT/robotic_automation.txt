@@ -1,0 +1,48 @@
+int buzzPin = 7;      // Buzzer connected to pin 7
+int trigPin = 6;      // Trigger pin for ultrasonic sensor
+int echoPin = A0;     // Echo pin for ultrasonic sensor
+int IRPin = A1;       // IR sensor connected to analog pin A1
+int IRV;              // Variable to store IR sensor value
+int duration, distance; // Variables for distance measurement
+
+void setup() 
+{
+    pinMode(trigPin, OUTPUT); // Set trigPin as an OUTPUT
+    pinMode(buzzPin, OUTPUT); // Set buzzPin as an OUTPUT
+    pinMode(echoPin, INPUT);  // Set echoPin as an INPUT
+    pinMode(IRPin, INPUT);    // Set IRPin as an INPUT
+    Serial.begin(9600);       // Start serial communication at 9600 baud rate
+}
+
+
+void loop()
+{
+    // Measure distance using ultrasonic sensor
+    digitalWrite(trigPin, LOW); 
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH); // Read the pulse duration
+    distance = duration * 0.034 / 2; // Calculate distance in cm
+
+    Serial.print("Distance in CM is: ");
+    Serial.println(distance);
+
+    // Check if an obstacle is detected
+    if (distance < 20) {
+        digitalWrite(buzzPin, HIGH); // Turn on the buzzer
+        Serial.println("Obstacle detected");
+    } else {
+        digitalWrite(buzzPin, LOW);  // Turn off the buzzer
+        Serial.println("Obstacle not detected");
+    }
+
+    delay(100); // Wait for 100 ms before the next measurement
+
+    // Read the value from the IR sensor
+    IRV = digitalRead(IRPin);
+    Serial.print("IR Sensor Value: ");
+    Serial.println(IRV);
+    delay(1000); // Wait for 1 second before the next loop
+}
