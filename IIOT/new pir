@@ -1,0 +1,17 @@
+int pirPin = 4; // PIR sensor pin
+
+void setup() {
+  pinMode(pirPin, INPUT); // Set PIR sensor pin as input
+  Serial.begin(9600); // Start serial communication
+}
+
+void loop() {
+  int pirState = digitalRead(pirPin); // Read PIR sensor state
+  
+  if (pirState == HIGH) {
+    Serial.println("Motion detected");
+  } else {
+    Serial.println("No motion detected");
+  }
+  delay(500); // Delay to avoid overwhelming the serial monitor
+}
