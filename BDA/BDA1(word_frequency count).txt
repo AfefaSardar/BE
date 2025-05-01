@@ -1,0 +1,73 @@
+student@ioe-aids-174:~$ start-dfs.sh
+Starting namenodes on [localhost]
+Starting datanodes
+Starting secondary namenodes [ioe-aids-174]
+student@ioe-aids-174:~$ start-yarn.sh
+Starting resourcemanager
+Starting nodemanagers
+student@ioe-aids-174:~$ jps
+3649 DataNode
+3409 NameNode
+4853 ResourceManager
+5192 NodeManager
+3996 SecondaryNameNode
+5358 Jps
+student@ioe-aids-174:~$ nano mapper.py
+student@ioe-aids-174:~$ nano reducer.py
+student@ioe-aids-174:~$ chmod +x mapper.py
+student@ioe-aids-174:~$ chmod +x reducer.py
+student@ioe-aids-174:~$ echo "hello world welcome to the world of big data hello" > input.txt
+student@ioe-aids-174:~$ cat input.txt | ./mapper.py | sort | ./reducer.py
+big	1
+data	1
+hello	2
+of	1
+the	1
+to	1
+welcome	1
+world	2
+
+
+
+Mapper code   
+                                                    mapper.py                                                                
+#!/usr/bin/env python3
+import sys
+for line in sys.stdin:
+    line = line.strip()
+    words = line.split()
+    for word in words:
+        print(f"{word}\t1")
+        
+        
+        
+Reducer code
+
+                                                                                                             
+#!/usr/bin/env python3
+import sys
+current_word = None
+current_count = 0
+
+for line in sys.stdin:
+    word, count = line.strip().split('\t')
+    try:
+        count = int(count)
+    except ValueError:
+        continue
+
+    if current_word == word:
+        current_count += count
+    else:
+        if current_word:
+            print(f"{current_word}\t{current_count}")
+        current_word = word
+        current_count = count
+
+if current_word == word:
+    print(f"{current_word}\t{current_count}")
+
+
+
+
+
